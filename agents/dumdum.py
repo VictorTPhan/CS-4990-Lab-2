@@ -166,7 +166,7 @@ class DumDum(agent.Agent):
  
         if hints > 0:
             hints = util.filter_actions(HINT_COLOR, valid_actions) + util.filter_actions(HINT_RANK, valid_actions)
-            hintgiven = random.choice(hints)
+            hintgiven = hints[2]
 
             number = []
             for _ in hands[player]:
@@ -178,7 +178,6 @@ class DumDum(agent.Agent):
                     if j+1 == k:
                         count += 1
                 if count >= 3:
-                    hintgiven = util.filter_actions(HINT_RANK, valid_actions)
                     for i, card in enumerate(hands[hintgiven.player]):
                         if card.rank == hintgiven.rank:
                             self.hints[(hintgiven.player, i)].add(HINT_RANK)
@@ -186,16 +185,7 @@ class DumDum(agent.Agent):
                 for i, card in enumerate(hands[hintgiven.player]):
                     if card.color == hintgiven.color:
                         self.hints[(hintgiven.player, i)].add(HINT_COLOR)
-            """
-            if hintgiven.type == HINT_COLOR:
-                for i,card in enumerate(hands[hintgiven.player]):
-                    if card.color == hintgiven.color:
-                        self.hints[(hintgiven.player,i)].add(HINT_COLOR)
-            else:
-                for i,card in enumerate(hands[hintgiven.player]):
-                    if card.rank == hintgiven.rank:
-                        self.hints[(hintgiven.player,i)].add(HINT_RANK)
-            """
+            
             return hintgiven
 
         ### FROM OSAWA OUTER
