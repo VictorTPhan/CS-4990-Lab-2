@@ -151,7 +151,7 @@ class DumDum(agent.Agent):
             t = None
             if hinttype:
                 t = random.choice(hinttype)
-            
+
             if t == HINT_RANK:
                 for i,card in enumerate(hands[player]):
                     if card.rank == hands[player][card_index].rank:
@@ -162,12 +162,31 @@ class DumDum(agent.Agent):
                     if card.color == hands[player][card_index].color:
                         self.hints[(player,i)].add(HINT_COLOR)
                 return Action(HINT_COLOR, player=player, color=hands[player][card_index].color)
-            
             playables = playables[1:]
  
         if hints > 0:
             hints = util.filter_actions(HINT_COLOR, valid_actions) + util.filter_actions(HINT_RANK, valid_actions)
             hintgiven = random.choice(hints)
+
+            number = []
+            for _ in hands[player]:
+                number.append(hands[player][card_index].rank)
+
+            for j in range(5):
+                count = 0
+                for k in number:
+                    if j+1 == k:
+                        count += 1
+                if count >= 3:
+                    hintgiven = util.filter_actions(HINT_RANK, valid_actions)
+                    for i, card in enumerate(hands[hintgiven.player]):
+                        if card.rank == hintgiven.rank:
+                            self.hints[(hintgiven.player, i)].add(HINT_RANK)
+            else:
+                for i, card in enumerate(hands[hintgiven.player]):
+                    if card.color == hintgiven.color:
+                        self.hints[(hintgiven.player, i)].add(HINT_COLOR)
+            """
             if hintgiven.type == HINT_COLOR:
                 for i,card in enumerate(hands[hintgiven.player]):
                     if card.color == hintgiven.color:
@@ -176,7 +195,7 @@ class DumDum(agent.Agent):
                 for i,card in enumerate(hands[hintgiven.player]):
                     if card.rank == hintgiven.rank:
                         self.hints[(hintgiven.player,i)].add(HINT_RANK)
-                
+            """
             return hintgiven
 
         ### FROM OSAWA OUTER
@@ -205,5 +224,6 @@ class DumDum(agent.Agent):
                 if (player,action.card_index+i+1) in self.hints:
                     self.hints[(player,action.card_index+i)] = self.hints[(player,action.card_index+i+1)]
                     self.hints[(player,action.card_index+i+1)] = set()
+
 
 agent.register("dumdum", "Dum Dum Player", DumDum)
