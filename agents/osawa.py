@@ -111,14 +111,14 @@ class OuterStatePlayer(agent.Agent):
             hints = util.filter_actions(HINT_COLOR, valid_actions) + util.filter_actions(HINT_RANK, valid_actions)
             hintgiven = random.choice(hints)
             if hintgiven.type == HINT_COLOR:
-                for i,card in enumerate(hands[hintgiven.player]):
+                for i, card in enumerate(hands[hintgiven.player]):
                     if card.color == hintgiven.color:
-                        self.hints[(hintgiven.player,i)].add(HINT_COLOR)
+                        self.hints[(hintgiven.player, i)].add(HINT_COLOR)
             else:
-                for i,card in enumerate(hands[hintgiven.player]):
+                for i, card in enumerate(hands[hintgiven.player]):
                     if card.rank == hintgiven.rank:
-                        self.hints[(hintgiven.player,i)].add(HINT_RANK)
-                
+                        self.hints[(hintgiven.player, i)].add(HINT_RANK)
+
             return hintgiven
 
         return random.choice(util.filter_actions(DISCARD, valid_actions))
