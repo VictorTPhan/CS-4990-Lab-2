@@ -142,8 +142,8 @@ class DumDum(agent.Agent):
             TODO - check if the other player knows what their card is with some certainty
             the player that knows least about their cards should be hinted
             '''
-            # Jesus' code
 
+            """
             # implementing a way to prioritize finishing a stack
             # if a 4 is on the board, and the player has a 5 they can play
             # we immediately hint about the 5
@@ -259,9 +259,9 @@ class DumDum(agent.Agent):
                                     if card.color == k.color:
                                         self.hints[(player, i)].add(HINT_COLOR)
                                 return Action(HINT_COLOR, player=player, color=k.color)
-
-            # OSAWA code (for reference)
             """
+            # OSAWA code (for reference)
+
             hinttype = [HINT_COLOR, HINT_RANK]
 
             for h in self.hints[(player, card_index)]:
@@ -281,11 +281,11 @@ class DumDum(agent.Agent):
                     if card.color == hands[player][card_index].color:
                         self.hints[(player, i)].add(HINT_COLOR)
                 return Action(HINT_COLOR, player=player, color=hands[player][card_index].color)
-            """
+
             playables = playables[1:]
 
         if hints > 0: # if there isn't a card that can be played
-            # Jesus' code
+
             """
             # implementing a way to hint about useless cards
             # look through each stack in the board
@@ -308,7 +308,9 @@ class DumDum(agent.Agent):
             # OSAWA code
 
             hints = util.filter_actions(HINT_COLOR, valid_actions) + util.filter_actions(HINT_RANK, valid_actions)
-            hintgiven = random.choice(hints)
+
+            hintgiven = hints[2]
+
             if hintgiven.type == HINT_COLOR:
                 for i, card in enumerate(hands[hintgiven.player]):
                     if card.color == hintgiven.color:
